@@ -7,4 +7,4 @@ dist/
 # os
 .DS_Store
 # docker
-docker/
+db/

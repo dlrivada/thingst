@@ -1,12 +1,17 @@
 import dotenv from 'dotenv'
 import dotenvExpand from 'dotenv-expand'
 
-const env = dotenv.config()
-dotenvExpand(env)
+if (process.env.NODE_ENV !== 'environment') // production | testing | staging | development
+    dotenvExpand(dotenv.config({ path: './src/config/.env' }))
 
-export const PORT = process.env.PORT
-export const MODE = process.env.MODE
-export const DOMAIN = process.env.DOMAIN
+export default {
+    PGPORT: process.env.PGPORT,
+    PGHOST: process.env.PGHOST,
+    PGUSER: process.env.PGUSER,
+    PGPASSWORD: process.env.PGPASSWORD,
+    PGDATABASE: process.env.PGDATABASE,
 
-export const SERVER_URL = process.env.SERVER_URL
-export const DB_URL = process.env.DB_URL
+    SERVER_URL: process.env.SERVER_URL,
+    DB_URL: process.env.DB_URL,
+    mode: process.env.MODE || process.env.NODE_ENV
+}
