@@ -1,9 +1,13 @@
 <p align="center">
-    <img src="./logo.svg" alt="Logo" width="480" />
+    <img src="docs/logo.svg" alt="Logo" width="280">
+</p>
+<p align="center">
+    <img src="https://img.shields.io/badge/version-0.2.0-EBCB8B?style=for-the-badge&logo=node.js&logoColor=EBCB8B" alt="JavaScript" />
 </p>
 
 <p align="center">
-    <img src="https://img.shields.io/badge/dynamic/json?color=EBCB8B&style=for-the-badge&label=version&prefix=v&query=version&url=https%3A%2F%2Fraw.githubusercontent.com%2Froremdev%2Fthingst%2Fmaster%2Fpackage.json" alt="JavaScript" />
+    <img src="https://img.shields.io/badge/v14.X-ECEFF4?style=for-the-badge&logo=Node.js" alt="NodeJS" />
+    <img src="https://img.shields.io/badge/supported-A7C9E6?style=for-the-badge&logo=Typescript" alt="Typescript" />
 </p>
 
 ### ✨About The Project

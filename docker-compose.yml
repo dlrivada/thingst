@@ -13,11 +13,16 @@ services:
     pgadmin:
         image: dpage/pgadmin4
         environment:
-            - PGADMIN_DEFAULT_EMAIL=dlrivada@hotmail.com
-            - PGADMIN_DEFAULT_PASSWORD=thingst
+            PGADMIN_DEFAULT_EMAIL: dlrivada@hotmail.com
+            PGADMIN_DEFAULT_PASSWORD: thingst
+            PGDATABASE: ${PGDATABASE}
+            PGUSER: ${PGUSER}
+            PGPASSWORD: ${PGPASSWORD}
         ports:
             - "5050:80"
         restart: always
+        volumes:
+            - ./db/mysql:/var/lib/pgadmin
     mysql:
         image: mysql
         restart: always
@@ -28,5 +33,15 @@ services:
             MYSQL_ROOT_PASSWORD: ${MYSQLPASSWORD}
             MYSQL_USER: ${MYSQLUSER}
             MYSQL_PASSWORD: ${MYSQLPASSWORD}
+        volumes:
+            - ./db/mysql:/var/lib/mysql
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        restart: always
+        ports:
+            - 8080:80
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQLPASSWORD}
+            PMA_HOST: mysql
         volumes:
             - ./db/mysql:/var/lib/mysql

@@ -18,7 +18,7 @@
             "@middlewares/*": ["./src/middlewares/*"],
             "@routes/*": ["./src/routes/*"],
             "@utils/*": ["./src/utils/*"],
-            "@validators/*": ["./src/validators/*"]
+            "@validators/*": ["src/schemas/*"]
         }
     },
     "exclude": ["test/**/*.test.ts"]

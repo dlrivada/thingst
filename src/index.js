@@ -1,18 +1,52 @@
-import express from 'express';
-import { listen } from './utils/Log';
-import config from './config/config';
-import { error } from './middlewares/Responses';
-import index from './routes/index';
-import task from './routes/api/task';
+/**
+ * @file index.js - Mocks module entry point for the application. This file is used to setup the mock data for the application. 
+ * @author {author} dlrivada <{@mail mailto:dlrivada@hotmail.com}> ({@link http://dlrivada.com})
+ * @module mocks - Mocks module entry point for the application. This file is used to setup the mock data for the application. 
+ * @requires mocks/models/order.model - Mocks module entry point for the application. This file is used to setup the mock data for the application. 
+ */
 
-const { mode, port } = config;
+const server = require('./config/config');
+const express = require('express');
+const cors = require('cors');
+const routerApi = require('./routes');
+const { logErrors, errorHandler, boomErrorHandler, ormErrorHandler } = require('./middlewares/error.handler');
+
 const app = express();
-
+// Body parser
 app.use(express.json());
-app.use('/', index);
-app.use('/task', task);
-app.use(error);
 
-if (mode !== 'test')
-    app.listen(port, () => listen(`⬢ Server Thingst - ${mode}`));
+// CORS
+const whitelist = ['http://localhost:8080', 'https://myapp.co'];
+const options = {
+  origin: (origin, callback) => {
+    if (whitelist.includes(origin) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('no permitido'));
+    }
+  }
+}
+app.use(cors(options));
+
+// Rutas
+app.get('/', (req, res) => {
+  res.send('Hola mi server en express');
+});
+
+app.get('/nueva-ruta', (req, res) => {
+  res.send('Hola, soy una nueva ruta');
+});
+
+// Rutas API
+routerApi(app);
+
+// Error handler
+app.use(logErrors);
+app.use(ormErrorHandler);
+app.use(boomErrorHandler);
+app.use(errorHandler);
+
+// Iniciar servidor
+if (server.config.mode !== 'test')
+    app.listen(server.config.port, () => console.log(`⬢ Server Thingst - ${server.config.env}`));
 export default app;
