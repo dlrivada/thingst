@@ -25,6 +25,7 @@ const orderRouter = require('./orders.router');
 const customersRouter = require('./customers.router');
 const orderlineRouter = require('./orderline.router');
 const authRouter = require('./auth.router');
+const profileRouter = require('./profile.router');
 
 /**
  * @description Función que inicializa las rutas de la API
@@ -51,6 +52,7 @@ function routerApi(app) {
   router.use('/orderlines', orderlineRouter);
   router.use('/customers', customersRouter);
   router.use('/auth', authRouter);
+  router.use('/profile', profileRouter);
 }
 
 module.exports = routerApi;

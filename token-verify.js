@@ -28,6 +28,7 @@ const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJjdXN0
  * @description
  * This function will verify a token with jsonwebtoken
  * @returns {Object}
+ * @throws {Error} Will throw an error if the token is invalid
  * @example
  * const payload = verifyToken(token, secret);
  * @version 1.0.0

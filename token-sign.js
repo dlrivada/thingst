@@ -31,6 +31,7 @@ const payload = {
  * @description
  * This function will sign a token with jsonwebtoken
  * @returns {string}
+ * @throws {Error} Will throw an error if the token is invalid
  * @example
  * const token = signToken(payload, secret);
  * @version 1.0.0

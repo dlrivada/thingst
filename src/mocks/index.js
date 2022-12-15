@@ -74,6 +74,8 @@ const { Category, CategorySchema } = require('./models/category.model');
 const { Product, ProductSchema } = require('./models/product.model');
 const { Order, OrderSchema } = require('./models/order.model');
 const { OrderLine, OrderLineSchema } = require('./models/orderline.model');
+const { Role, RoleSchema } = require('./models/role.model');
+const { RefreshToken, RefreshTokenSchema } = require('./models/refresh-token.model');
 
 /**
  * Setup models and associations for sequelize instance and models object in the app context object (app.locals) 
@@ -92,6 +94,8 @@ function setupModels(sequelize) {
   Product.init(ProductSchema, Product.config(sequelize));
   Order.init(OrderSchema, Order.config(sequelize));
   OrderLine.init(OrderLineSchema, OrderLine.config(sequelize));
+  Role.init(RoleSchema, Role.config(sequelize));
+  RefreshToken.init(RefreshTokenSchema, RefreshToken.config(sequelize));
   // Setup associations
   User.associate(sequelize.models);
   Customer.associate(sequelize.models);
@@ -99,6 +103,8 @@ function setupModels(sequelize) {
   Product.associate(sequelize.models);
   Order.associate(sequelize.models);
   OrderLine.associate(sequelize.models);
+  Role.associate(sequelize.models);
+  RefreshToken.associate(sequelize.models);
 }
 
 module.exports = setupModels;

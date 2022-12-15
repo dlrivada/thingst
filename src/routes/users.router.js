@@ -22,6 +22,7 @@ const express = require('express');
 const UserService = require('./../services/user.service');
 const validatorHandler = require('./../middlewares/validator.handler');
 const { updateUserSchema, createUserSchema, getUserSchema, queryUserSchema } = require('./../schemas/user.schema');
+const passport = require('passport');
 
 const router = express.Router();
 const service = new UserService();
@@ -107,6 +108,7 @@ const service = new UserService();
  * return res.status(200).json(users);
  */
 router.get('/', 
+  passport.authenticate('jwt', { session: false }),
   validatorHandler(queryUserSchema, 'query'),
   async (req, res, next) => {
   try {
@@ -204,6 +206,7 @@ router.get('/',
  * return res.status(200).json(user);
  */
 router.get('/:id',
+  passport.authenticate('jwt', { session: false }),
   validatorHandler(getUserSchema, 'params'),
   async (req, res, next) => {
     try {
@@ -276,6 +279,7 @@ router.get('/:id',
  * return res.status(201).json(newCategory);
  */
 router.post('/',
+  passport.authenticate('jwt', { session: false }),
   validatorHandler(createUserSchema, 'body'),
   async (req, res, next) => {
     try {
@@ -357,6 +361,7 @@ router.post('/',
  * return res.status(201).json({id});
  */
 router.patch('/:id',
+  passport.authenticate('jwt', { session: false }),
   validatorHandler(getUserSchema, 'params'),
   validatorHandler(updateUserSchema, 'body'),
   async (req, res, next) => {
@@ -432,6 +437,7 @@ router.patch('/:id',
  * return res.status(201).json({id});
  */
 router.delete('/:id',
+  passport.authenticate('jwt', { session: false }),
   validatorHandler(getUserSchema, 'params'),
   async (req, res, next) => {
     try {

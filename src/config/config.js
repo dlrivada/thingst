@@ -35,7 +35,50 @@ const config = {
   dbHost:  process.env.PGHOST,
   dbName:  process.env.PGDATABASE,
   dbPort:  process.env.PGPORT,
-  apiKey: process.env.API_KEY
+  apiKey: process.env.API_KEY,
+  jwtSecret: process.env.JWT_SECRET,
+  jwtExpiration: 3600,           // 1 hour
+  jwtRefreshExpiration: 86400,   // 24 hours
+
+  /* for test */
+  // jwtExpiration: 60,          // 1 minute
+  // jwtRefreshExpiration: 120,  // 2 minutes
+
+  // mailer
+  mailerService: process.env.MAILER_SERVICE_PROVIDER,
+  mailerUser: process.env.MAILER_USER,
+  mailerPassword: process.env.MAILER_PASSWORD,
+  mailerEmail: process.env.MAILER_EMAIL,
+  mailerName: process.env.MAILER_NAME,
+  mailerPort: process.env.MAILER_PORT,
+  mailerHost: process.env.MAILER_HOST,
+  mailerSecure: process.env.MAILER_SECURE,
+  mailerRequireTLS: process.env.MAILER_REQUIRE_TLS,
+  mailerRequireSSL: process.env.MAILER_REQUIRE_SSL,
+  mailerFrom: process.env.MAILER_FROM,
+  mailerTo: process.env.MAILER_TO,
+  mailerSubject: process.env.MAILER_SUBJECT,
+  mailerText: process.env.MAILER_TEXT,
+  mailerHtml: process.env.MAILER_HTML,
+  mailerAttachments: process.env.MAILER_ATTACHMENTS,
+  mailerBcc: process.env.MAILER_BCC,
+  mailerCc: process.env.MAILER_CC,
+  mailerReplyTo: process.env.MAILER_REPLY_TO,
+  mailerInReplyTo: process.env.MAILER_IN_REPLY_TO,
+  mailerReferences: process.env.MAILER_REFERENCES,
+  mailerList: process.env.MAILER_LIST,
+  mailerPriority: process.env.MAILER_PRIORITY,
+  mailerXMailer: process.env.MAILER_X_MAILER,
+  mailerXPriority: process.env.MAILER_X_PRIORITY,
+  mailerXMSMailPriority: process.env.MAILER_X_MSMAIL_PRIORITY,
+  mailerXMailer: process.env.MAILER_X_MAILER,
+
+  host: process.env.HOST,
+  hostUrl: process.env.HOST_URL,
+  hostUrlApi: process.env.HOST_URL_API,
+  hostUrlApiV1: process.env.HOST_URL_API_V1,
+  hostUrlApiV1Auth: process.env.HOST_URL_API_V1_AUTH,
+  
 }
 
 module.exports = { config };

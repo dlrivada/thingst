@@ -25,9 +25,18 @@
 
 const express = require('express');
 const passport = require('passport');
+const jwt = require('jsonwebtoken');
+const { AuthService } = require('../services/auth.service');
+const { User } = require('../models/user.model');
+const { Role } = require('../models/role.model');
+const { models } = require('./../libs/sequelize');
+const validatorHandler = require('./../middlewares/validator.handler');
+const { loginSchema } = require('./../schemas/auth.schema');
 
+const { config } = require('./../config');
 
 const router = express.Router();
+const authService = new AuthService();
 
 /**
  * @swagger
@@ -110,10 +119,400 @@ const router = express.Router();
  * @see {@link https://www.npmjs.com/package/express-validator#validation-result-api| express-validator validation result api}
  */
 router.post('/login',
-  passport.authenticate('local', {session: false}),
+  passport.authenticate('jwt', {session: false}),
   async (req, res, next) => {
     try {
-      res.json(req.user);
+      const user = req.user;
+      const login = await authService.login(user);
+      res.status(200).json(login);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post('/refresh-token',
+  passport.authenticate('jwt', {session: false}),
+  async (req, res, next) => {
+    try {
+      const { refreshToken: requestToken } = req.body;
+
+      const newAccessToken = await authService.refreshToken(requestToken);
+      res.status(200).json({
+        accessToken: newAccessToken,
+        refreshToken: refreshToken.token,
+      });
+    } catch (err) {
+      return res.status(500).send({ message: err });
+    }
+  }
+);
+
+router.post('/logout',
+  passport.authenticate('jwt', {session: false}),
+  async (req, res, next) => {
+    try {
+      const { accessToken: requestToken } = req.body;
+      const message = await authService.logout(requestToken);
+      res.status(200).json(message);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post('/logout-all',
+  passport.authenticate('jwt', {session: false}),
+  async (req, res, next) => {
+    try {
+      const { accessToken: requestToken } = req.body;
+      const message = await authService.logoutAll(requestToken);
+      res.status(200).json(message);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post('/register',
+  async (req, res, next) => {
+    try {
+      const { email, password } = req.body;
+      const user = await authService.register(email, password);
+      res.status(200).json({
+        message: 'Register successful',
+        userId: user.id,
+        email: user.email,
+        role: user.role,
+        createdAt: user.createdAt,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post('/forgot-password',
+  async (req, res, next) => {
+    try {
+      const { email } = req.body;
+      const message = await authService.forgotPassword(email);
+      res.status(200).json(message);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post('/reset-password',
+  async (req, res, next) => {
+    try {
+      const { password, token } = req.body;
+      const message = await authService.resetPassword(token, password);
+      res.status(200).json(message);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post('/change-password',
+  passport.authenticate('jwt', {session: false}),
+  async (req, res, next) => {
+    try {
+      res.json({
+        message: 'Change password successful'
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post('/change-email',
+  passport.authenticate('jwt', {session: false}),
+  async (req, res, next) => {
+    try {
+      res.json({
+        message: 'Change email successful'
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post('/verify-email',
+  async (req, res, next) => {
+    try {
+      res.json({
+        message: 'Verify email successful'
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post('/verify-phone',
+  async (req, res, next) => {
+    try {
+      res.json({
+        message: 'Verify phone successful'
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post('/change-phone',
+  passport.authenticate('jwt', {session: false}),
+  async (req, res, next) => {
+    try {
+      res.json({
+        message: 'Change phone successful'
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post('/verify-otp',
+  async (req, res, next) => {
+    try {
+      res.json({
+        message: 'Verify otp successful'
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post('/resend-otp',
+  async (req, res, next) => {
+    try {
+      res.json({
+        message: 'Resend otp successful'
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post('/validate-user',
+  async (req, res, next) => {
+    try {
+      res.json({
+        message: 'Validate user successful'
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post('/validate-admin',
+  async (req, res, next) => {
+    try {
+      res.json({
+        message: 'Validate admin successful'
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post('/validate-scope',
+  async (req, res, next) => {
+    try {
+      res.json({
+        message: 'Validate scope successful'
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post('/validate-sccopes',
+  async (req, res, next) => {
+    try {
+      res.json({
+        message: 'Validate scopes successful'
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post('/validate-All-sccopes',
+  async (req, res, next) => {
+    try {
+      res.json({
+        message: 'Validate all scopes successful'
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post('/validate-Any-sccopes',
+  async (req, res, next) => {
+    try {
+      res.json({
+        message: 'Validate any scopes successful'
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post('/validate-All-roles',
+  async (req, res, next) => {
+    try {
+      res.json({
+        message: 'Validate all roles successful'
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post('/validate-Any-roles',
+  async (req, res, next) => {
+    try {
+      res.json({
+        message: 'Validate any roles successful'
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post('/validate-roles',
+  async (req, res, next) => {
+    try {
+      res.json({
+        message: 'Validate roles successful'
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post('/validate-role',
+  async (req, res, next) => {
+    try {
+      res.json({
+        message: 'Validate role successful'
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post('/validate-All-permissions',
+  async (req, res, next) => {
+    try {
+      res.json({
+        message: 'Validate all permissions successful'
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post('/validate-Any-permissions',
+  async (req, res, next) => {
+    try {
+      res.json({
+        message: 'Validate any permissions successful'
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post('/validate-permissions',
+  async (req, res, next) => {
+    try {
+      res.json({
+        message: 'Validate permissions successful'
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post('/validate-permission',
+  async (req, res, next) => {
+    try {
+      res.json({
+        message: 'Validate permission successful'
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post('/validate-All-roles-permissions',
+  async (req, res, next) => {
+    try {
+      res.json({
+        message: 'Validate all roles permissions successful'
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post('/validate-Any-roles-permissions',
+  async (req, res, next) => {
+    try {
+      res.json({
+        message: 'Validate any roles permissions successful'
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post('/validate-roles-permissions',
+  async (req, res, next) => {
+    try {
+      res.json({
+        message: 'Validate roles permissions successful'
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post('/validate-role-permission',
+  async (req, res, next) => {
+    try {
+      res.json({
+        message: 'Validate role permission successful'
+      });
     } catch (error) {
       next(error);
     }

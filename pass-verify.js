@@ -19,6 +19,7 @@ const bcrypt = require('bcrypt');
  * @description
  * This function will verify a password against a hash
  * @returns {void}
+ * @throws {Error} Will throw an error if the password is invalid
  * @example
  * verifyPassword();
  * @version 1.0.0

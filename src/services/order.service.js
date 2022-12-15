@@ -11,6 +11,42 @@ class OrderService {
     return newOrder;
   }
 
+  /**
+   * Find all orders of an user in database and return them as array of objects  
+   * @function findByUser  
+   * @description Find all orders of an user in database and return them as array of objects
+   * @param {string} id
+   * @param {object} data
+   * @returns {Promise<Order>}
+   * @memberof OrderService
+   * @throws {Error} If order is not found
+   * @throws {Error} If order is not updated
+   * @throws {Error} If order is not deleted
+   * @throws {Error} If order is not found
+   * @version 1.0.0
+   * @since 1.0.0
+   * @example
+   * const orderService = require('./services/order.service');
+   * const orders = await orderService.findByUser(userId);
+   * @see {@link https://www.npmjs.com/package/@hapi/boom| @hapi/boom}
+   * @see {@link https://www.npmjs.com/package/joi| joi}
+   * @see {@link https://www.npmjs.com/package/joi#validation-api| joi validation api}
+   */
+  async findByUser(userId) {
+    const orders = await models.Order.findAll({
+      where: {
+        '$customer.user.id$': userId
+      },
+      include: [
+        {
+          association: 'customer',
+          include: ['user']
+        }
+      ]
+    });
+    return orders;
+  }
+
   async find(query) {
     const options = {
       include: [{

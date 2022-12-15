@@ -4,11 +4,13 @@ const OrderService = require('./../services/order.service');
 const validatorHandler = require('./../middlewares/validator.handler');
 const { getOrderSchema, createOrderSchema, updateOrderSchema, queryOrderSchema } = require('./../schemas/order.schema');
 const { createOrderLineSchema } = require('./../schemas/orderline.schema');
+const passport = require('passport');
 
 const router = express.Router();
 const service = new OrderService();
 
 router.get('/', 
+passport.authenticate('jwt', { session: false }),
 validatorHandler(queryOrderSchema, 'query'),
 async (req, res, next) => {
   try {
@@ -18,7 +20,9 @@ async (req, res, next) => {
   }
 });
 
-router.get('/:id', validatorHandler(getOrderSchema, 'params'), async (req, res, next) => {
+router.get('/:id', 
+passport.authenticate('jwt', { session: false }),
+validatorHandler(getOrderSchema, 'params'), async (req, res, next) => {
   try {
     const { id } = req.params;
     res.json(await service.findOne(id));
@@ -27,7 +31,9 @@ router.get('/:id', validatorHandler(getOrderSchema, 'params'), async (req, res, 
   }
 });
 
-router.post('/', validatorHandler(createOrderSchema, 'body'), async (req, res, next) => {
+router.post('/', 
+passport.authenticate('jwt', { session: false }),
+validatorHandler(createOrderSchema, 'body'), async (req, res, next) => {
   try {
     const body = req.body;
     res.status(201).json(await service.create(body));
@@ -36,8 +42,8 @@ router.post('/', validatorHandler(createOrderSchema, 'body'), async (req, res, n
   }
 });
 
-router.post(
-  '/:id/orderlines',
+router.post('/:id/orderlines',
+  passport.authenticate('jwt', { session: false }),
   validatorHandler(getOrderSchema, 'params'),
   validatorHandler(createOrderLineSchema, 'body'),
   async (req, res, next) => {
@@ -51,7 +57,10 @@ router.post(
   }
 );
 
-router.patch('/:id', validatorHandler(getOrderSchema, 'params'), validatorHandler(updateOrderSchema, 'body'), async (req, res, next) => {
+router.patch('/:id', 
+passport.authenticate('jwt', { session: false }),
+validatorHandler(getOrderSchema, 'params'), 
+validatorHandler(updateOrderSchema, 'body'), async (req, res, next) => {
   try {
     const { id } = req.params;
     const body = req.body;
@@ -61,7 +70,9 @@ router.patch('/:id', validatorHandler(getOrderSchema, 'params'), validatorHandle
   }
 });
 
-router.delete('/:id', validatorHandler(getOrderSchema, 'params'), async (req, res, next) => {
+router.delete('/:id', 
+passport.authenticate('jwt', { session: false }),
+validatorHandler(getOrderSchema, 'params'), async (req, res, next) => {
   try {
     const { id } = req.params;
     res.status(200).json(await service.delete(id));

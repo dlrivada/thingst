@@ -16,8 +16,42 @@
  */
 
 const boom = require('@hapi/boom');
-
+const jwt = require("jsonwebtoken");
 const { config } = require('./../config/config');
+
+const { TokenExpiredError } = jwt;
+
+const catchError = (err, res, next) => {
+  if (err instanceof TokenExpiredError) {
+    next(boom.unauthorized("Unauthorized! Access Token was expired!"));
+  }
+  next(boom.unauthorized("Unauthorized!"));
+}
+
+const verifyToken = (req, res, next) => {
+  let token = req.headers["x-access-token"];
+
+  if (!token) {
+    next(boom.unauthorized("Unauthorized! No token provided!"));
+  }
+
+  jwt.verify(token, config.jwtSecret, (err, decoded) => {
+    if (err) {
+      catchError(err, res, next);
+    }
+    if (!decoded) {
+      next(boom.unauthorized("Unauthorized!"));
+    }
+    if (!decoded.sub) {
+      next(boom.unauthorized("Unauthorized!"));
+    }
+    if (decoded.oneTimeToken) {
+      next(boom.unauthorized("Unauthorized! One time token!"));
+    }
+    req.userId = decoded.sub;
+    next();
+  });
+};
 
 /**
  * @function checkApiKey - Middleware to check the api key in the request headers 
@@ -49,4 +83,4 @@ function checkApiKey(req, res, next) {
   }
 }
 
-module.exports = { checkApiKey }
+module.exports = { checkApiKey, verifyToken }

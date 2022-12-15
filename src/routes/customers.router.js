@@ -1,3 +1,5 @@
+import passport from 'passport';
+
 const express = require('express');
 
 const CustomerService = require('./../services/customer.service');
@@ -13,6 +15,7 @@ const router = express.Router();
 const service = new CustomerService();
 
 router.get('/',  
+passport.authenticate('jwt', { session: false }),
 validatorHandler(queryCustomerSchema, 'query'),
 async (req, res, next) => {
   try {
@@ -23,6 +26,7 @@ async (req, res, next) => {
 });
 
 router.post('/',
+  passport.authenticate('jwt', { session: false }),
   validationHandler(createCustomerSchema, 'body'),
   async (req, res, next) => {
     try {
@@ -35,6 +39,7 @@ router.post('/',
 );
 
 router.patch('/:id',
+  passport.authenticate('jwt', { session: false }),
   validationHandler(getCustomerSchema, 'params'),
   validationHandler(updateCustomerSchema, 'body'),
   async (req, res, next) => {
@@ -49,6 +54,7 @@ router.patch('/:id',
 );
 
 router.delete('/:id',
+  passport.authenticate('jwt', { session: false }),
   validationHandler(getCustomerSchema, 'params'),
   async (req, res, next) => {
     try {
@@ -61,17 +67,3 @@ router.delete('/:id',
 );
 
 module.exports = router;
-
-router.delete('/:id',
-  validationHandler(getCustomerSchema, 'params'),
-  async (req, res, next) => {
-    try {
-      const { id } = req.params;
-      res.status(200).json(await service.delete(id));
-    } catch (error) {
-      next(error);
-    }
-  }
-);
-
-export default router;

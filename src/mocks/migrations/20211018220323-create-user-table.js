@@ -1,7 +1,6 @@
 'use strict';
 
-const { USER_TABLE } = require('./../models/user.model');
-const { UserSchema } = require('./../models/user.schema');
+const { USER_TABLE, UserSchema } = require('./../models/user.model');
 
 module.exports = {
   up: async (queryInterface) => {

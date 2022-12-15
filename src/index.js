@@ -43,6 +43,7 @@ app.get('/nueva-ruta', checkApiKey, (req, res) => {
 // Rutas API
 routerApi(app);
 
+//app.use(verifyToken);
 // Error handler
 app.use(logErrors);
 app.use(ormErrorHandler);
