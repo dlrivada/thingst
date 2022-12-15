@@ -24,8 +24,23 @@ const usersRouter = require('./users.router');
 const orderRouter = require('./orders.router');
 const customersRouter = require('./customers.router');
 const orderlineRouter = require('./orderline.router');
+const authRouter = require('./auth.router');
 
-// Ejecutar router y exportar
+/**
+ * @description Función que inicializa las rutas de la API
+ * @function routerApi
+ * @param {object} app - Objeto de express
+ * @version 1.0.0
+ * @since 1.0.0
+ * @example
+ * const routerApi = require('./routes/index');
+ * routerApi(app);
+ * @see {@link https://www.npmjs.com/package/express| express}
+ * @see {@link https://www.npmjs.com/package/express#express| express}
+ * @see {@link https://www.npmjs.com/package/express#app| express app}
+ * @see {@link https://www.npmjs.com/package/express#router| express router}
+ * @see {@link https://www.npmjs.com/package/express#expressrouter| express expressRouter}
+ */
 function routerApi(app) {
   const router = express.Router();
   app.use('/api/v1', router);
@@ -35,6 +50,7 @@ function routerApi(app) {
   router.use('/orders', orderRouter);
   router.use('/orderlines', orderlineRouter);
   router.use('/customers', customersRouter);
+  router.use('/auth', authRouter);
 }
 
 module.exports = routerApi;

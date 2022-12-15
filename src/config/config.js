@@ -35,6 +35,7 @@ const config = {
   dbHost:  process.env.PGHOST,
   dbName:  process.env.PGDATABASE,
   dbPort:  process.env.PGPORT,
+  apiKey: process.env.API_KEY
 }
 
 module.exports = { config };

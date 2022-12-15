@@ -29,6 +29,7 @@
  */
 
 const boom = require('@hapi/boom');
+const { bcrypt } = require('bcrypt');
 const { models } = require('./../libs/sequelize');
 
 /**
@@ -69,9 +70,14 @@ class UserService {
  * const user = await userService.create(data);
  */
   async create(data) {
-    const newUser = await models.User.create(data,{
+    const hash = await bcrypt.hash(data.password, 10);
+    const newUser = await models.User.create({
+      ...data,
+      password: hash,
+    },{
       include: ['customer']
     });
+    delete newUser.dataValues.password;
     return newUser;
   }
 
@@ -171,6 +177,40 @@ class UserService {
       ]
     }
     const rta = await models.User.findAll(options);
+    return rta;
+  }
+
+/**
+ * @description Find one user by Email
+ * @param {Number} email - User email
+ * @returns {Object} User found
+ * @version 1.0.0
+ * @since 1.0.0
+ * @example
+ * const userService = new UserService();
+ * const user = await userService.findOne(email);
+ * @todo
+ * 6. Add exclude
+ * 7. Add relations
+ * 8. Add relations filter
+ * 9. Add relations search
+ * 10. Add relations order
+ * 11. Add relations pagination
+ * 12. Add relations include
+ * 13. Add relations exclude
+ * @dlrivada 2022-12-14 17:34 - Add pagination
+ * and order by id and name and
+ * @dlrivada 2022-12-14 17:34 - Add pagination
+ * and order by id and name and email
+ * and search by name and email
+ * and filter by name and email
+ * and include customer
+ * and relation customer
+ */
+  async findByEmail(email) {
+    const rta = await models.User.findOne({
+      where: { email }
+    });
     return rta;
   }
 
