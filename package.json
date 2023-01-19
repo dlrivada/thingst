@@ -29,7 +29,7 @@
     "dependencies": {
         "@babel/runtime": "^7.15.4",
         "@hapi/boom": "^10.0.0",
-        "@prisma/client": "^3.7.0",
+        "@prisma/client": "^3.15.2",
         "accesscontrol": "^2.2.1",
         "bcrypt": "^5.1.0",
         "chalk": "^4.1.2",
