@@ -27,7 +27,7 @@
         "docs": "docsify serve docs"
     },
     "dependencies": {
-        "@babel/runtime": "^7.15.4",
+        "@babel/runtime": "^7.20.7",
         "@hapi/boom": "^10.0.0",
         "@prisma/client": "^3.7.0",
         "accesscontrol": "^2.2.1",
