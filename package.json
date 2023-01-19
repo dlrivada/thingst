@@ -51,7 +51,7 @@
         "pg-hstore": "^2.3.4",
         "pm2": "^5.2.2",
         "sequelize": "^6.27.0",
-        "swagger-jsdoc": "^6.1.0",
+        "swagger-jsdoc": "^6.2.7",
         "swagger-ui-express": "^4.2.0"
     },
     "devDependencies": {
