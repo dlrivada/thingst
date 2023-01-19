@@ -52,7 +52,7 @@
         "pm2": "^5.2.2",
         "sequelize": "^6.27.0",
         "swagger-jsdoc": "^6.1.0",
-        "swagger-ui-express": "^4.2.0"
+        "swagger-ui-express": "^4.6.0"
     },
     "devDependencies": {
         "@babel/cli": "^7.15.7",
